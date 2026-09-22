@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MLBot — Mercado Livre Automation Dashboard</title>
+  <meta name="description" content="Sanitized case study of a production dashboard that automated Mercado Livre listing creation, publishing, editing, auditing, and controlled AI workflows.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vinioccode.github.io/mlbot-case-study/">
+  <meta property="og:title" content="MLBot — Mercado Livre Automation Dashboard">
+  <meta property="og:description" content="A production automation case study: 500+ listings, API integrations, OAuth2, validation harnesses, guardrails, tests, and human review.">
+  <meta property="og:image" content="https://opengraph.githubassets.com/mlbot-case-study/ViniOcCode/mlbot-case-study">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MLBot — Mercado Livre Automation Dashboard">
+  <meta name="twitter:description" content="Sanitized case study of a production dashboard with controlled AI-assisted workflows.">
+  <meta name="twitter:image" content="https://opengraph.githubassets.com/mlbot-case-study/ViniOcCode/mlbot-case-study">
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #071018;
+      --surface: #101c27;
+      --surface-soft: #152534;
+      --text: #f5f7fa;
+      --muted: #b8c4cf;
+      --accent: #ffe600;
+      --accent-ink: #171500;
+      --line: #294052;
+      --success: #83f3b3;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% 8%, rgba(255, 230, 0, .13), transparent 26rem),
+        linear-gradient(180deg, #071018 0%, #0a1520 100%);
+      line-height: 1.65;
+    }
+
+    a { color: var(--text); }
+    a:hover { color: var(--accent); }
+    .wrap { width: min(calc(100% - 2rem), var(--max)); margin: 0 auto; }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { font-weight: 800; letter-spacing: .04em; text-decoration: none; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1rem; font-size: .92rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 3rem;
+      align-items: center;
+      min-height: 70vh;
+      padding: 5rem 0 4rem;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: .78rem;
+    }
+
+    h1 { margin: .6rem 0 1rem; font-size: clamp(2.7rem, 7vw, 5.9rem); line-height: .95; letter-spacing: -.055em; }
+    h2 { margin: 0 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.08; letter-spacing: -.035em; }
+    h3 { margin: 0 0 .55rem; font-size: 1.05rem; }
+    .lead { max-width: 48rem; color: var(--muted); font-size: 1.12rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+
+    .button {
+      display: inline-flex;
+      padding: .8rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: .7rem;
+      text-decoration: none;
+      font-weight: 750;
+      background: var(--surface);
+    }
+
+    .button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .metric-panel { display: grid; gap: .8rem; }
+    .metric { padding: 1.25rem; border: 1px solid var(--line); border-radius: 1rem; background: rgba(16, 28, 39, .82); }
+    .metric strong { display: block; color: var(--accent); font-size: 2rem; line-height: 1; }
+    .metric span { color: var(--muted); font-size: .9rem; }
+
+    section { padding: 4.5rem 0; border-top: 1px solid var(--line); }
+    .section-intro { max-width: 49rem; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+    .card { padding: 1.35rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); }
+    .card p { margin: 0; color: var(--muted); }
+
+    .architecture { display: grid; gap: .7rem; margin-top: 2rem; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: .7rem; align-items: stretch; }
+    .node { display: grid; place-items: center; min-height: 7rem; padding: 1rem; text-align: center; border: 1px solid var(--line); border-radius: .85rem; background: var(--surface); font-weight: 720; }
+    .node.accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .flow-note { color: var(--muted); font-size: .9rem; }
+
+    .checklist { display: grid; grid-template-columns: repeat(2, 1fr); gap: .7rem 2rem; padding: 0; list-style: none; margin: 2rem 0 0; }
+    .checklist li { position: relative; padding-left: 1.65rem; color: var(--muted); }
+    .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 900; }
+
+    .principle { margin-top: 2rem; padding: 1.5rem; border-left: .35rem solid var(--accent); background: var(--surface-soft); font-size: 1.2rem; font-weight: 700; }
+    details { margin-top: 2rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: .85rem; background: var(--surface); }
+    summary { cursor: pointer; font-weight: 800; color: var(--accent); }
+    footer { padding: 2.5rem 0 4rem; color: var(--muted); border-top: 1px solid var(--line); }
+    footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 3.5rem; }
+      .grid, .flow { grid-template-columns: 1fr; }
+      .checklist { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav>
+      <a class="brand" href="#top">ML<span>BOT</span></a>
+      <div class="nav-links">
+        <a href="#system">System</a>
+        <a href="#ai">AI workflow</a>
+        <a href="#results">Results</a>
+        <a href="#portuguese">Português</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <div class="eyebrow">Sanitized professional case study</div>
+        <h1>Catalog automation with controlled AI.</h1>
+        <p class="lead">A production web dashboard that automated Mercado Livre listing creation, publishing, editing, and auditing while keeping AI-generated output behind validation and human review.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/ViniOcCode/mlbot-case-study">View source repository</a>
+          <a class="button" href="https://www.linkedin.com/in/viniciusoccavalheiro/">LinkedIn profile</a>
+        </div>
+      </div>
+      <aside class="metric-panel" aria-label="Project metrics">
+        <div class="metric"><strong>500+</strong><span>listings processed</span></div>
+        <div class="metric"><strong>4</strong><span>core operational workflows</span></div>
+        <div class="metric"><strong>1</strong><span>independent end-to-end owner</span></div>
+      </aside>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="eyebrow">Context</div>
+        <h2>From repetitive catalog work to one operational dashboard.</h2>
+        <p class="section-intro">Large-catalog operations involved repetitive publication work, inconsistent content, slow updates, and limited visibility into catalog-wide issues. The solution centralized those workflows while preserving explicit review points.</p>
+        <div class="grid">
+          <article class="card"><h3>Create and publish</h3><p>Normalized product information and generated Mercado Livre API payloads through a controlled workflow.</p></article>
+          <article class="card"><h3>Edit published listings</h3><p>Retrieved and updated existing listings from a centralized interface instead of repeated manual edits.</p></article>
+          <article class="card"><h3>Audit the catalog</h3><p>Consolidated listing information so incomplete records and inconsistencies could be reviewed at scale.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="system">
+      <div class="wrap">
+        <div class="eyebrow">Sanitized architecture</div>
+        <h2>Integrations coordinated around a reviewable workflow.</h2>
+        <div class="architecture">
+          <div class="flow" aria-label="Architecture flow">
+            <div class="node">Operator</div>
+            <div class="node">Web dashboard</div>
+            <div class="node">Backend orchestration</div>
+            <div class="node">Validation and review</div>
+            <div class="node accent">Mercado Livre API</div>
+          </div>
+          <p class="flow-note">Supporting integrations included OAuth2, cloud storage, Google Drive, Seller7, and AI-assisted image and listing generation. Deployment topology and proprietary data structures are intentionally omitted.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai">
+      <div class="wrap">
+        <div class="eyebrow">AI-assisted engineering</div>
+        <h2>Acceleration with evidence, not blind acceptance.</h2>
+        <p class="section-intro">AI supported both product workflows and software development. Generated output was treated as a proposal that had to satisfy explicit constraints and verification criteria.</p>
+        <ul class="checklist">
+          <li>Structured prompts and explicit context</li>
+          <li>Reusable skills for repeatable tasks</li>
+          <li>Task-specific validation harnesses</li>
+          <li>Guardrails and business-rule checks</li>
+          <li>Automated tests and security checks</li>
+          <li>Human review before publication</li>
+        </ul>
+        <div class="principle">AI can accelerate implementation, but evidence determines whether the result is accepted.</div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div class="wrap">
+        <div class="eyebrow">Results</div>
+        <h2>More than 500 listings processed through a maintainable foundation.</h2>
+        <div class="grid">
+          <article class="card"><h3>Centralized operation</h3><p>Creation, publication, editing, and auditing were brought into one dashboard.</p></article>
+          <article class="card"><h3>Reviewable automation</h3><p>Repetitive steps became controlled workflows with explicit validation points.</p></article>
+          <article class="card"><h3>Practical AI governance</h3><p>AI generation remained behind harnesses, guardrails, tests, and human review.</p></article>
+        </div>
+
+        <details id="portuguese">
+          <summary>Versão resumida em português</summary>
+          <p>O MLBot foi um painel web de produção que automatizava a criação e publicação de anúncios no Mercado Livre, além de oferecer edição de anúncios publicados e conferência geral do catálogo.</p>
+          <p>Projetei e implementei a solução de forma independente, integrando OAuth2, armazenamento em nuvem, Google Drive, Seller7 e recursos de IA. O sistema foi utilizado no processamento de mais de 500 anúncios.</p>
+          <p>A IA era aplicada de forma controlada, com prompts e contexto estruturados, skills reutilizáveis, harnesses de validação, guardrails, testes automatizados, checagens de segurança e revisão humana.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Vinicius Octavio Pereira Cavalheiro</span>
+      <span>Portfolio-safe case study — client data and proprietary code excluded.</span>
+    </div>
+  </footer>
+</body>
+</html>
