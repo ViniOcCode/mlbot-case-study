@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MLBot — Mercado Livre Automation Dashboard</title>
-  <meta name="description" content="Sanitized case study of a production dashboard that automated Mercado Livre listing creation, publishing, editing, auditing, and controlled AI workflows.">
+  <meta name="description" content="Sanitized case study of a production dashboard that automated Mercado Livre listing creation, publishing, editing, and catalog auditing.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vinioccode.github.io/mlbot-case-study/">
   <meta property="og:title" content="MLBot — Mercado Livre Automation Dashboard">
-  <meta property="og:description" content="A production automation case study: 500+ listings, API integrations, OAuth2, validation harnesses, guardrails, tests, and human review.">
+  <meta property="og:description" content="A production automation case study: 500+ listings, REST API integrations, OAuth2, payload validation, automated tests, and human review.">
   <meta property="og:image" content="https://opengraph.githubassets.com/mlbot-case-study/ViniOcCode/mlbot-case-study">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MLBot — Mercado Livre Automation Dashboard">
-  <meta name="twitter:description" content="Sanitized case study of a production dashboard with controlled AI-assisted workflows.">
+  <meta name="twitter:description" content="Sanitized case study of a production Mercado Livre catalog automation dashboard.">
   <meta name="twitter:image" content="https://opengraph.githubassets.com/mlbot-case-study/ViniOcCode/mlbot-case-study">
   <style>
     :root {
@@ -133,7 +133,7 @@
       <a class="brand" href="#top">ML<span>BOT</span></a>
       <div class="nav-links">
         <a href="#system">System</a>
-        <a href="#ai">AI workflow</a>
+        <a href="#reliability">Reliability</a>
         <a href="#results">Results</a>
         <a href="#portuguese">Português</a>
       </div>
@@ -144,8 +144,8 @@
     <div class="wrap hero">
       <div>
         <div class="eyebrow">Sanitized professional case study</div>
-        <h1>Catalog automation with controlled AI.</h1>
-        <p class="lead">A production web dashboard that automated Mercado Livre listing creation, publishing, editing, and auditing while keeping AI-generated output behind validation and human review.</p>
+        <h1>Mercado Livre catalog automation at scale.</h1>
+        <p class="lead">A production web dashboard that automated listing creation, publishing, editing, and catalog auditing through the Mercado Livre REST API with strict validation and human review.</p>
         <div class="actions">
           <a class="button primary" href="https://github.com/ViniOcCode/mlbot-case-study">View source repository</a>
           <a class="button" href="https://www.linkedin.com/in/viniciusoccavalheiro/">LinkedIn profile</a>
@@ -183,25 +183,25 @@
             <div class="node">Validation and review</div>
             <div class="node accent">Mercado Livre API</div>
           </div>
-          <p class="flow-note">Supporting integrations included OAuth2, cloud storage, Google Drive, Seller7, and AI-assisted image and listing generation. Deployment topology and proprietary data structures are intentionally omitted.</p>
+          <p class="flow-note">Supporting integrations included OAuth2 token lifecycle, cloud storage, Google Drive, and external catalog services. Deployment topology and proprietary data structures are intentionally omitted.</p>
         </div>
       </div>
     </section>
 
-    <section id="ai">
+    <section id="reliability">
       <div class="wrap">
-        <div class="eyebrow">AI-assisted engineering</div>
-        <h2>Acceleration with evidence, not blind acceptance.</h2>
-        <p class="section-intro">AI supported both product workflows and software development. Generated output was treated as a proposal that had to satisfy explicit constraints and verification criteria.</p>
+        <div class="eyebrow">Reliability & validation</div>
+        <h2>Safe automation with explicit verification before publishing.</h2>
+        <p class="section-intro">Every operation that mutates live marketplace listings goes through deterministic checks before hitting external APIs.</p>
         <ul class="checklist">
-          <li>Structured prompts and explicit context</li>
-          <li>Reusable skills for repeatable tasks</li>
-          <li>Task-specific validation harnesses</li>
-          <li>Guardrails and business-rule checks</li>
-          <li>Automated tests and security checks</li>
-          <li>Human review before publication</li>
+          <li>Normalized inputs and strict API payload schema validation</li>
+          <li>Business-rule checks for pricing, attributes, and required media</li>
+          <li>OAuth2 token refresh and failure-path handling</li>
+          <li>Automated test suite covering core workflows</li>
+          <li>Dockerized runtime with isolated credentials</li>
+          <li>Explicit human review before publishing live listings</li>
         </ul>
-        <div class="principle">AI can accelerate implementation, but evidence determines whether the result is accepted.</div>
+        <div class="principle">Automation should eliminate repetitive work without sacrificing control over production data.</div>
       </div>
     </section>
 
@@ -212,14 +212,14 @@
         <div class="grid">
           <article class="card"><h3>Centralized operation</h3><p>Creation, publication, editing, and auditing were brought into one dashboard.</p></article>
           <article class="card"><h3>Reviewable automation</h3><p>Repetitive steps became controlled workflows with explicit validation points.</p></article>
-          <article class="card"><h3>Practical AI governance</h3><p>AI generation remained behind harnesses, guardrails, tests, and human review.</p></article>
+          <article class="card"><h3>Production resilience</h3><p>Validated payloads, automated tests, and human checkpoints prevented silent catalog errors.</p></article>
         </div>
 
         <details id="portuguese">
           <summary>Versão resumida em português</summary>
-          <p>O MLBot foi um painel web de produção que automatizava a criação e publicação de anúncios no Mercado Livre, além de oferecer edição de anúncios publicados e conferência geral do catálogo.</p>
-          <p>Projetei e implementei a solução de forma independente, integrando OAuth2, armazenamento em nuvem, Google Drive, Seller7 e recursos de IA. O sistema foi utilizado no processamento de mais de 500 anúncios.</p>
-          <p>A IA era aplicada de forma controlada, com prompts e contexto estruturados, skills reutilizáveis, harnesses de validação, guardrails, testes automatizados, checagens de segurança e revisão humana.</p>
+          <p>O MLBot é um painel web em produção que automatiza a criação e publicação de anúncios no Mercado Livre, além de oferecer edição centralizada de anúncios publicados e auditoria geral do catálogo.</p>
+          <p>Projetei e implementei a solução de ponta a ponta, integrando OAuth2, armazenamento em nuvem, Google Drive e serviços externos de catálogo. O sistema processou mais de 500 anúncios em produção.</p>
+          <p>Cada publicação passa por validação rigorosa de payload, regras de negócio, testes automatizados, empacotamento em Docker e revisão humana antes de alterar anúncios ao vivo.</p>
         </details>
       </div>
     </section>
